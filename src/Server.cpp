@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
    while(true){
   //
-    thread t(handleRequest, clientSocket);
+    std::thread t(handleRequest, clientSocket);
     t.detach();
 
   }
