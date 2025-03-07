@@ -12,11 +12,14 @@
 using namespace std;
 
 void handleRequest(int clientSocket) {
+  
+  while(true){
   char buffer[1024];
 
   recv(clientSocket, buffer, 1024, 0);
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
+}
 }
 
 int main(int argc, char **argv) {
@@ -74,7 +77,7 @@ int main(int argc, char **argv) {
   int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   std::cout << "Client connected\n";
     thread t(handleRequest, clientSocket);
-
+    t.detach();
 
   }
   
