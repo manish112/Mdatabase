@@ -65,11 +65,13 @@ int main(int argc, char **argv) {
    std::cout << "Waiting for a client to connect...\n";
   //
   
-   int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-   std::cout << "Client connected\n";
+
 
    while(true){
   //
+
+  int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+  std::cout << "Client connected\n";
     thread t(handleRequest, clientSocket);
     t.detach();
 
