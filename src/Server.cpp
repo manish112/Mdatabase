@@ -77,6 +77,7 @@ int main(int argc, char **argv) {
   int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   std::cout << "Client connected\n";
     thread t(handleRequest, clientSocket);
+    t.get_id();
     t.detach();
 
   }
