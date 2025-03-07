@@ -16,7 +16,14 @@ void handleRequest(int clientSocket) {
   while(true){
   char buffer[1024];
 
-  recv(clientSocket, buffer, 1024, 0);
+  int recv_bytes=recv(clientSocket, buffer, 1024, 0);
+
+    if(recv_bytes==0){
+      std::cout << "Client disconnected\n";
+      close(clientSocket);
+      return;
+    }
+
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
 }
@@ -77,7 +84,7 @@ int main(int argc, char **argv) {
   int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   std::cout << "Client connected\n";
     thread t(handleRequest, clientSocket);
-    cout<<"Thread ID: "+t.get_id().to_string()<<endl;
+    cout<<"Thread ID: "+t.get_id();
     t.detach();
 
   }
