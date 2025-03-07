@@ -59,14 +59,20 @@ int main(int argc, char **argv) {
 
    while(true){
   //
+    thread t(handleRequest, clientSocket);
+    t.detach();
+
+  }
+  
+   close(server_fd);
+
+  return 0;
+}
+
+void handleRequest(int clientSocket, ) {
   char buffer[1024];
 
   recv(clientSocket, buffer, 1024, 0);
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
-   }
-  
-   close(server_fd);
-
-  return 0;
 }
