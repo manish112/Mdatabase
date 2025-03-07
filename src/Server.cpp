@@ -7,6 +7,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <thread>
+
+using namespace std;
 
 int main(int argc, char **argv) {
   // Flush after every std::cout / std::cerr
@@ -59,7 +62,7 @@ int main(int argc, char **argv) {
 
    while(true){
   //
-    std::thread t(handleRequest, clientSocket);
+    thread t(handleRequest, clientSocket);
     t.detach();
 
   }
