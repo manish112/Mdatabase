@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void handleRequest(int clientSocket, ) {
+void handleRequest(int clientSocket) {
   char buffer[1024];
 
   recv(clientSocket, buffer, 1024, 0);
