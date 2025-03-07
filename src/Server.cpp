@@ -11,6 +11,14 @@
 
 using namespace std;
 
+void handleRequest(int clientSocket) {
+  char buffer[1024];
+
+  recv(clientSocket, buffer, 1024, 0);
+  char *message="+PONG\r\n";
+  send(clientSocket, message, strlen(message), 0);
+}
+
 int main(int argc, char **argv) {
   // Flush after every std::cout / std::cerr
   std::cout << std::unitbuf;
@@ -72,10 +80,4 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void handleRequest(int clientSocket) {
-  char buffer[1024];
 
-  recv(clientSocket, buffer, 1024, 0);
-  char *message="+PONG\r\n";
-  send(clientSocket, message, strlen(message), 0);
-}
