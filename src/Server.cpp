@@ -58,17 +58,18 @@ int main(int argc, char **argv) {
      std::cerr << "listen failed\n";
      return 1;
    }
-  //
-   struct sockaddr_in client_addr;
-   int client_addr_len = sizeof(client_addr);
-  //
-   std::cout << "Waiting for a client to connect...\n";
-  //
+  
+
   
 
 
    while(true){
-  //
+    
+    struct sockaddr_in client_addr;
+    int client_addr_len = sizeof(client_addr);
+   
+    std::cout << "Waiting for a client to connect...\n";
+   
 
   int clientSocket = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   std::cout << "Client connected\n";
