@@ -10,6 +10,8 @@
 #include <thread>
 #include <vector>
 #include<unordered_map>
+#include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,7 +23,7 @@ void handleRequest(int clientSocket)
 
   string readBuffer;
 
-  unordered_map<string, string> memoryDB;
+  unordered_map<string, string, int> memoryDB;
 
   while (true)
   {
@@ -169,8 +171,9 @@ string local_buffer=buffer;
     }
 
     position += 2;
-
-    command.push_back(buffer.substr(position, tokenLength));
+    string strCommand=buffer.substr(position, tokenLength);
+    transform(strCommand.begin(), strCommand.end(), strCommand.begin(), [](unsigned char c) { return toupper(c); });
+    command.push_back(strCommand);
     position += tokenLength;
 
 
@@ -189,7 +192,7 @@ string local_buffer=buffer;
  
 }
 
-string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase) {
+string processArray(vector<string> &command, unordered_map<string, string, int> &memoryDatabase) {
 
     if (command[0]=="PING") {
       return "$4\r\nPONG\r\n";
@@ -201,6 +204,8 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
   }
 
   if (command[0]=="SET") {
+
+
 
           memoryDatabase.insert({command[1],command[2]});
           return "+OK\r\n";
