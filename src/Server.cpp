@@ -133,7 +133,7 @@ vector<string> processRESPCommand(string &buffer)
 
   if (buffer[position] != '\r' && buffer[position + 1] != '\n')
   {
-    return noValidCommand;
+    return {"nvc2";
   }
 
   position += 2;
@@ -143,7 +143,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '$')
     {
-      return noValidCommand;
+      return {"nvc3"};
     }
 
     position++;
@@ -153,7 +153,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return noValidCommand;
+      return {"nvc4"};
     }
 
     position += 2;
@@ -162,7 +162,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return noValidCommand;
+      return {"nvc5"};
     }
 
     position += 2;
