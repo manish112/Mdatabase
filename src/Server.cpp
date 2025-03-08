@@ -123,7 +123,7 @@ vector<string> processRESPCommand(string &buffer)
 
   if (buffer[position] != '*')
   {
-    return noValidCommand;
+    return {"nvc1"};
   }
 
   position++;
