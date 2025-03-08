@@ -138,6 +138,7 @@ string local_buffer=buffer;
 
   if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
   {
+    cout<<buffer[position]<<buffer[position+1]<<buffer[position+2]<<buffer[position+3]<<"\n";
     return {"nvc2"};
   }
 
