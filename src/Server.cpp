@@ -243,7 +243,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
       if (expiryTime_reference!=expiryTimeMap.end()) {
         auto currentTime=chrono::system_clock::now().time_since_epoch().count();
         cout<<"debug time:"<<currentTime<<" "<<expiryTime_reference->second<<endl;
-        if (expiryTime_reference->second<currentTime) {
+        if (expiryTime_reference->second>currentTime) {
           return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
         }else {
           cout<<"expired";
