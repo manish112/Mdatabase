@@ -14,7 +14,7 @@
 using namespace std;
 
 vector<string> processRESPCommand(string &buffer);
-string processArray(vector<string> &command,unordered_map<string, string> memoryDatabase);
+string processArray(vector<string> &command,unordered_map<string, string> &memoryDatabase);
 
 void handleRequest(int clientSocket)
 {
@@ -202,14 +202,14 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
 
   if (command[0]=="SET") {
 
-          memoryDatabase.insert(command[1],command[2]);
+          memoryDatabase.insert({command[1],command[2]});
           return "+OK\r\n";
 
   }
 
   if (command[0]=="GET") {
 
-     auto map_reference= memoryDatabase.find(command[1])
+     auto map_reference= memoryDatabase.find(command[1]);
 
     if (map_reference!=memoryDatabase.end()) {
 
@@ -219,5 +219,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
       return "$-1\r\n";
     }
   }
+
+  return "$-1\r\n";
 
 }
