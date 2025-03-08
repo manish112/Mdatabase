@@ -160,6 +160,7 @@ vector<string> processRESPCommand(string &buffer)
 
     command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
+    cout<<buffer[position];
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
