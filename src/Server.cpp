@@ -51,7 +51,7 @@ void handleRequest(int clientSocket)
   // }
 
    vector<string> command = processRESPCommand(readBuffer);
-    cout<<command[0]<<"\n";
+    //cout<<command[0]<<"\n";
     const char *message = processArray(command,memoryDB, expiryTime).c_str();
     send(clientSocket, message, strlen(message), 0);
   }
@@ -126,8 +126,7 @@ int main(int argc, char **argv)
 
 vector<string> processRESPCommand(string &buffer)
 {
-string local_buffer=buffer;
-  cout<<local_buffer<<"\n";
+
   int position = 0;
   vector<string> command;
   vector<string> noValidCommand={"NVC"};
@@ -219,7 +218,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
 
             if (px=="PX") {
               auto systemTime=chrono::system_clock::now().time_since_epoch().count();
-              expiryTime=stoi(command[4])+systemTime;
+              expiryTime=stoi(stof(command[4])+systemTime;
               expiryTimeMap.insert({command[1],expiryTime});
             }
           }
