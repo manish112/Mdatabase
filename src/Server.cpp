@@ -220,7 +220,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
               transform(px.begin(), px.end(), px.begin(), ::toupper);
 
             if (px=="PX") {
-              auto systemTime=chrono::system_clock::now().time_since_epoch().count();
+              auto systemTime=chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
               cout<<"systemTime: "<<systemTime<<endl;
 
               expiryTime=stol(command[4])+systemTime;
@@ -241,7 +241,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
     if (map_reference!=memoryDatabase.end()) {
       auto expiryTime_reference=expiryTimeMap.find(command[1]);
       if (expiryTime_reference!=expiryTimeMap.end()) {
-        auto currentTime=chrono::system_clock::now().time_since_epoch().count();
+        auto currentTime=chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
         cout<<"debug time:"<<currentTime<<" "<<expiryTime_reference->second<<endl;
         if (expiryTime_reference->second>currentTime) {
           return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
