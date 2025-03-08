@@ -52,7 +52,9 @@ void handleRequest(int clientSocket)
 
    vector<string> command = processRESPCommand(readBuffer);
     //cout<<command[0]<<"\n";
-    const char *message = processArray(command,memoryDB, expiryTime).c_str();
+
+    string response = processArray(command, memoryDB, expiryTime);
+    const char *message = response.c_str();
     send(clientSocket, message, strlen(message), 0);
   }
 }
