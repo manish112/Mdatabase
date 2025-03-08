@@ -34,7 +34,10 @@ void handleRequest(int clientSocket)
       return;
     }
     readBuffer.append(buffer, recv_bytes);
-   cout<<processRESPCommand(readBuffer)[0];
+    cout<<readBuffer<<endl;
+    cout<<recv_bytes<<endl;
+   string hhh=processRESPCommand(readBuffer)[0];
+    cout<<hhh<<endl;
     char *message = "+PONG\r\n";
     send(clientSocket, message, strlen(message), 0);
   }
@@ -127,11 +130,13 @@ vector<string> processRESPCommand(string &buffer)
   }
 
   position++;
-  int commandLength = buffer[position];
+  int commandLength = stoi(&buffer[position]);
 
   position++;
 
-  if (buffer[position] != '\r' && buffer[position + 1] != '\n')
+  string hh=buffer.substr(position+2,2);
+  string jj=buffer.substr(position,2);
+  if (buffer[position] != '\r' && buffer[position+1] != '\n')
   {
     return {"nvc2"};
   }
