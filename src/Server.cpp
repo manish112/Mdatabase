@@ -218,7 +218,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
 
             if (px=="PX") {
               auto systemTime=chrono::system_clock::now().time_since_epoch().count();
-              expiryTime=stoi(stof(command[4])+systemTime;
+              expiryTime=stof(command[4])+systemTime;
               expiryTimeMap.insert({command[1],expiryTime});
             }
           }
@@ -236,6 +236,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
       auto expiryTime_reference=expiryTimeMap.find(command[1]);
       if (expiryTime_reference!=expiryTimeMap.end()) {
         auto currentTime=chrono::system_clock::now().time_since_epoch().count();
+        cout<<"debug time:"<<currentTime<<" "<<expiryTime_reference->second<<endl;
         if (expiryTime_reference->second<currentTime) {
           return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
         }else {
