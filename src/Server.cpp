@@ -9,16 +9,19 @@
 #include <netdb.h>
 #include <thread>
 #include <vector>
+#include<unordered_map>
 
 using namespace std;
 
 vector<string> processRESPCommand(string &buffer);
-string processArray(vector<string> &command);
+string processArray(vector<string> &command,unordered_map<string, string> memoryDatabase);
 
 void handleRequest(int clientSocket)
 {
 
   string readBuffer;
+
+  unordered_map<string, string> memoryDB;
 
   while (true)
   {
@@ -41,7 +44,7 @@ void handleRequest(int clientSocket)
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
-    const char *message = processArray(command).c_str();
+    const char *message = processArray(command,memoryDB).c_str();
     send(clientSocket, message, strlen(message), 0);
   }
 }
@@ -186,7 +189,7 @@ string local_buffer=buffer;
  
 }
 
-string processArray(vector<string> &command) {
+string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase) {
 
     if (command[0]=="PING") {
       return "$4\r\nPONG\r\n";
@@ -195,6 +198,26 @@ string processArray(vector<string> &command) {
   if (command[0]=="ECHO") {
 
     return "$"+to_string(command[1].size())+"\r\n"+command[1]+"\r\n";;
+  }
+
+  if (command[0]=="SET") {
+
+          memoryDatabase.insert(command[1],command[2]);
+          return "+OK\r\n";
+
+  }
+
+  if (command[0]=="GET") {
+
+     auto map_reference= memoryDatabase.find(command[1])
+
+    if (map_reference!=memoryDatabase.end()) {
+
+      return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
+    }
+    else {
+      return "$-1\r\n";
+    }
   }
 
 }
