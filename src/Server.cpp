@@ -34,7 +34,7 @@ void handleRequest(int clientSocket)
       return;
     }
     readBuffer.append(buffer, recv_bytes);
-   // cout<<processRESPCommand(readBuffer)<<endl;
+   processRESPCommand(readBuffer)<<endl;
     char *message = "+PONG\r\n";
     send(clientSocket, message, strlen(message), 0);
   }
@@ -170,7 +170,7 @@ vector<string> processRESPCommand(string &buffer)
 
   }
 
-  cout<<command[0];
+  cout<<"Command1: "<<command;
   return command;
  
 }
