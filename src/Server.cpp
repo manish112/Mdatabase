@@ -34,7 +34,7 @@ void handleRequest(int clientSocket)
       return;
     }
     readBuffer.append(buffer, recv_bytes);
-   processRESPCommand(readBuffer)<<endl;
+   processRESPCommand(readBuffer);
     char *message = "+PONG\r\n";
     send(clientSocket, message, strlen(message), 0);
   }
