@@ -46,9 +46,9 @@ void handleRequest(int clientSocket)
 
     readBuffer=buffer;
 
-  for (int i = 0; i < 60; i++) {
-    cout << i<<"-> "<<buffer[i] << endl;
-  }
+  // for (int i = 0; i < 60; i++) {
+  //   cout << i<<"-> "<<buffer[i] << endl;
+  // }
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
