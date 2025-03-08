@@ -34,6 +34,9 @@ void handleRequest(int clientSocket)
       close(clientSocket);
       return;
     }
+  for (int i = 0; i < 40; i++) {
+    cout<<"buffer["<<i<<"]: "<<buffer[i]<<"\n";
+  }
     readBuffer=buffer;
 
    vector<string> command = processRESPCommand(readBuffer);
