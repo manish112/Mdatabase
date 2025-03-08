@@ -158,11 +158,7 @@ vector<string> processRESPCommand(string &buffer)
 
     position += 2;
 
-    for (int j = 0; j < tokenLength; j++)
-    {
-      command.push_back(buffer[position]);
-      position++;
-    }
+    command.push_back(buffer.substr(position, tokenLength));
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
@@ -173,6 +169,8 @@ vector<string> processRESPCommand(string &buffer)
 
 
   }
+
+  cout<<command[0];
   return command;
  
 }
