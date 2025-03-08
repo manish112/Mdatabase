@@ -32,7 +32,7 @@ int main() {
     }
 
     // The message to send (using proper escape sequences for CR and LF)
-    const char *message = "*2\r\n$4\r\nECHO\r\n$9\r\nraspberry\r\n";
+    const char *message = "*5\r\n$3\r\nSET\r\n$6\r\nbanana\r\n$10\r\nstrawberry\r\n$2\r\npx\r\n$3\r\n100\r\n";
 
     // Send the message
     ssize_t sentBytes = send(sock, message, strlen(message), 0);

@@ -19,13 +19,15 @@ using namespace std;
 vector<string> processRESPCommand(string &buffer);
 string processArray(vector<string> &command,unordered_map<string, string> &memoryDatabase, unordered_map<string, long> &expiryTime);
 
+unordered_map<string, string> memoryDB;
+unordered_map<string, long> expiryTime;
+
 void handleRequest(int clientSocket)
 {
 
   string readBuffer;
 
-  unordered_map<string, string> memoryDB;
-  unordered_map<string, long> expiryTime;
+
 
   while (true)
   {
@@ -44,7 +46,9 @@ void handleRequest(int clientSocket)
 
     readBuffer=buffer;
 
-
+  for (int i = 0; i < 60; i++) {
+    cout << i<<"-> "<<buffer[i] << endl;
+  }
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
@@ -165,7 +169,7 @@ string local_buffer=buffer;
     position++;
     int tokenLength = stoi(&buffer[position]);
 
-    position++;
+    position+=to_string(tokenLength).size();
 
     if (buffer[position] != '\r' && buffer[position+1] != '\n')
     {
