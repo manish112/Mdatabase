@@ -29,7 +29,7 @@ void handleRequest(int clientSocket) {
       close(clientSocket);
       return;
     }
-    readBuffer.append(byffer,recv_bytes);
+    readBuffer.append(buffer,recv_bytes);
     cout<<"Read buffer: "<<readBuffer<<endl;
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
