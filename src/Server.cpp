@@ -23,7 +23,7 @@ void handleRequest(int clientSocket)
 
   string readBuffer;
 
-  unordered_map<string, string, int> memoryDB;
+  unordered_map<string, string> memoryDB;
 
   while (true)
   {
@@ -192,7 +192,7 @@ string local_buffer=buffer;
  
 }
 
-string processArray(vector<string> &command, unordered_map<string, string, int> &memoryDatabase) {
+string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase) {
 
     if (command[0]=="PING") {
       return "$4\r\nPONG\r\n";
