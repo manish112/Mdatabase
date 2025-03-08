@@ -112,17 +112,18 @@ vector<string> processRESPCommand(string &buffer)
 
   int position = 0;
   vector<string> command;
+  vector<string> noValidCommand="NVC";
 
   int sizeOfbuffer = buffer.size();
 
   if (sizeOfbuffer < 1)
   {
-    return "NVC";
+    return noValidCommand;
   }
 
   if (buffer[position] != '*')
   {
-    return "NVC";
+    return noValidCommand;
   }
 
   position++;
@@ -132,7 +133,7 @@ vector<string> processRESPCommand(string &buffer)
 
   if (buffer[position] != '\r' && buffer[position + 1] != '\n')
   {
-    return "NVC";
+    return noValidCommand;
   }
 
   position += 2;
@@ -142,7 +143,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '$')
     {
-      return "NVC";
+      return noValidCommand;
     }
 
     position++;
@@ -152,7 +153,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return "NVC";
+      return noValidCommand;
     }
 
     position += 2;
@@ -165,7 +166,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return "NVC";
+      return noValidCommand;
     }
 
     position += 2;
