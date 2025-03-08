@@ -15,21 +15,23 @@ using namespace std;
 
 
 void handleRequest(int clientSocket) {
+  
   string readBuffer;
+
   while(true){
   char buffer[1024];
 
   memset(buffer,0,sizeof(buffer));
 
   int recv_bytes=recv(clientSocket, buffer, 1024, 0);
-  cout<<"buffer length:"<<sizeof(buffer)<<endl;
-  cout<<"Recieved data: "<<buffer<<endl;
+ 
     if(recv_bytes==0){
       std::cout << "Client disconnected\n";
       close(clientSocket);
       return;
     }
     readBuffer.append(buffer,recv_bytes);
+    cout<<"Read buffer size: "<<readBuffer.size()<<endl;
     cout<<"Read buffer: "<<readBuffer<<endl;
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
