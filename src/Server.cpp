@@ -170,7 +170,7 @@ vector<string> processRESPCommand(string &buffer)
 
   }
 
-  cout<<"Command1: "<<command;
+  cout<<"Command1: "<<command[0]<<endl;
   return command;
  
 }
