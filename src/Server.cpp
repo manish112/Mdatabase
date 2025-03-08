@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <thread>
-#include "Parser.cpp""
+#include "Parser.cpp"
 
 using namespace std;
 
@@ -40,6 +40,8 @@ int main(int argc, char **argv) {
 
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   std::cout << "Logs from your program will appear here!\n";
+
+  test1();
 
   // Uncomment this block to pass the first stage
   
