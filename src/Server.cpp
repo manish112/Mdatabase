@@ -161,7 +161,7 @@ vector<string> processRESPCommand(string &buffer)
     command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
     vector<string> gg;
-    gg.push_back(to_string(position));
+    gg.push_back(to_string(buffer.size()));
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
