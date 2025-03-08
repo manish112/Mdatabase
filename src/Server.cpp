@@ -34,7 +34,7 @@ void handleRequest(int clientSocket)
       return;
     }
     readBuffer.append(buffer, recv_bytes);
-    cout<<processRESPCommand(readBuffer)<<endl;
+   // cout<<processRESPCommand(readBuffer)<<endl;
     char *message = "+PONG\r\n";
     send(clientSocket, message, strlen(message), 0);
   }
@@ -112,7 +112,7 @@ vector<string> processRESPCommand(string &buffer)
 
   int position = 0;
   vector<string> command;
-  vector<string> noValidCommand="NVC";
+  vector<string> noValidCommand={"NVC"};
 
   int sizeOfbuffer = buffer.size();
 
