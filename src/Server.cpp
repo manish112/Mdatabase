@@ -54,7 +54,7 @@ void handleRequest(int clientSocket)
     //cout<<command[0]<<"\n";
 
     string response = processArray(command, memoryDB, expiryTime);
-    cout << response << endl;
+
     const char *message = response.c_str();
     send(clientSocket, message, strlen(message), 0);
   }
@@ -195,7 +195,7 @@ vector<string> processRESPCommand(string &buffer)
 
   }
 
-  cout<<"Command1: "<<command[0]<<endl;
+
   return command;
  
 }
@@ -242,11 +242,11 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
       auto expiryTime_reference=expiryTimeMap.find(command[1]);
       if (expiryTime_reference!=expiryTimeMap.end()) {
         auto currentTime=chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
-        cout<<"debug time:"<<currentTime<<" "<<expiryTime_reference->second<<endl;
+
         if (expiryTime_reference->second>currentTime) {
           return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
         }else {
-          cout<<"expired";
+
           memoryDatabase.erase(map_reference);
           expiryTimeMap.erase(expiryTime_reference);
           return "$-1\r\n";
