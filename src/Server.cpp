@@ -40,7 +40,7 @@ void handleRequest(int clientSocket)
     readBuffer=buffer;
 
     cout<<"Data received: "<<readBuffer<<endl;
-    Cout<<"Length of data: "<<readBuffer.size()<<endl;
+    cout<<"Length of data: "<<readBuffer.size()<<endl;
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
