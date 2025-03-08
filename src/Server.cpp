@@ -13,6 +13,7 @@
 using namespace std;
 
 vector<string> processRESPCommand(string &buffer);
+string processArray(vector<string> &command);
 
 void handleRequest(int clientSocket)
 {
@@ -33,12 +34,10 @@ void handleRequest(int clientSocket)
       close(clientSocket);
       return;
     }
-    readBuffer.append(buffer, recv_bytes);
-    cout<<readBuffer<<endl;
-    cout<<recv_bytes<<endl;
-   string hhh=processRESPCommand(readBuffer)[0];
-    cout<<hhh<<endl;
-    char *message = "+PONG\r\n";
+    readBuffer=buffer;
+
+   vector<string> command = processRESPCommand(readBuffer);
+    const char *message = processArray(command).c_str();
     send(clientSocket, message, strlen(message), 0);
   }
 }
@@ -112,7 +111,7 @@ int main(int argc, char **argv)
 
 vector<string> processRESPCommand(string &buffer)
 {
-
+string local_buffer=buffer;
   int position = 0;
   vector<string> command;
   vector<string> noValidCommand={"NVC"};
@@ -134,14 +133,13 @@ vector<string> processRESPCommand(string &buffer)
 
   position++;
 
-  string hh=buffer.substr(position+2,2);
-  string jj=buffer.substr(position,2);
-  if (buffer[position] != '\r' && buffer[position+1] != '\n')
+
+  if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
   {
     return {"nvc2"};
   }
 
-  position += 2;
+  position += 4;
 
   for (int i = 0; i < commandLength; i++)
   {
@@ -152,28 +150,28 @@ vector<string> processRESPCommand(string &buffer)
     }
 
     position++;
-    int tokenLength = buffer[position];
+    int tokenLength = stoi(&buffer[position]);
 
     position++;
 
-    if (buffer[position] != '\r' && buffer[position + 1] != '\n')
+    if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
     {
       return {"nvc4"};
     }
 
-    position += 2;
+    position += 4;
 
     command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
     vector<string> gg;
     gg.push_back(to_string(buffer.size()));
 
-    if (buffer[position] != '\r' && buffer[position + 1] != '\n')
+    if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
     {
       return command;
     }
 
-    position += 2;
+    position += 4;
 
 
   }
@@ -181,4 +179,17 @@ vector<string> processRESPCommand(string &buffer)
   cout<<"Command1: "<<command[0]<<endl;
   return command;
  
+}
+
+string processArray(vector<string> &command) {
+
+    if (command[0]=="PING") {
+      return "$4\r\nPONG\r\n";
+    }
+
+  if (command[0]=="ECHO") {
+
+    return "$"+to_string(command[1].size())+"\r\n"+command[1]+"\r\n";;
+  }
+
 }
