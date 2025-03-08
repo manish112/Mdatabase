@@ -37,6 +37,7 @@ void handleRequest(int clientSocket)
     readBuffer=buffer;
 
    vector<string> command = processRESPCommand(readBuffer);
+    cout<<command[0]<<"\n";
     const char *message = processArray(command).c_str();
     send(clientSocket, message, strlen(message), 0);
   }
@@ -112,6 +113,7 @@ int main(int argc, char **argv)
 vector<string> processRESPCommand(string &buffer)
 {
 string local_buffer=buffer;
+  cout<<local_buffer<<"\n";
   int position = 0;
   vector<string> command;
   vector<string> noValidCommand={"NVC"};
