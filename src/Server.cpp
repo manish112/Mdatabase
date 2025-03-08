@@ -165,7 +165,7 @@ vector<string> processRESPCommand(string &buffer)
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return gg;
+      return command;
     }
 
     position += 2;
