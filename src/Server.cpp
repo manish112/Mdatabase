@@ -12,11 +12,12 @@
 #include<unordered_map>
 #include <cctype>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
 vector<string> processRESPCommand(string &buffer);
-string processArray(vector<string> &command,unordered_map<string, string> &memoryDatabase);
+string processArray(vector<string> &command,unordered_map<string, string> &memoryDatabase, unordered_map<string, long> &expiryTime);
 
 void handleRequest(int clientSocket)
 {
@@ -24,6 +25,7 @@ void handleRequest(int clientSocket)
   string readBuffer;
 
   unordered_map<string, string> memoryDB;
+  unordered_map<string, long> expiryTime;
 
   while (true)
   {
@@ -46,7 +48,7 @@ void handleRequest(int clientSocket)
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
-    const char *message = processArray(command,memoryDB).c_str();
+    const char *message = processArray(command,memoryDB, expiryTime).c_str();
     send(clientSocket, message, strlen(message), 0);
   }
 }
@@ -192,32 +194,53 @@ string local_buffer=buffer;
  
 }
 
-string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase) {
+string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase, unordered_map<string, long> &expiryTimeMap) {
 
-    if (command[0]=="PING") {
+    string strCommand=command[0];
+    transform(strCommand.begin(), strCommand.end(), strCommand.begin(), ::toupper);
+    if (strCommand=="PING") {
       return "$4\r\nPONG\r\n";
     }
 
-  if (command[0]=="ECHO") {
+  if (strCommand=="ECHO") {
 
     return "$"+to_string(command[1].size())+"\r\n"+command[1]+"\r\n";;
   }
 
-  if (command[0]=="SET") {
+  if (strCommand=="SET") {
+          long expiryTime=-1;
+          if (command.size()==5) {
+              string px = command[3];
+              transform(px.begin(), px.end(), px.begin(), ::toupper);
 
-
+            if (px=="PX") {
+              auto systemTime=chrono::system_clock::now().time_since_epoch().count();
+              expiryTime=stoi(command[4])+systemTime;
+              expiryTimeMap.insert({command[1],expiryTime});
+            }
+          }
 
           memoryDatabase.insert({command[1],command[2]});
           return "+OK\r\n";
 
   }
 
-  if (command[0]=="GET") {
+  if (strCommand=="GET") {
 
      auto map_reference= memoryDatabase.find(command[1]);
 
     if (map_reference!=memoryDatabase.end()) {
-
+      auto expiryTime_reference=expiryTimeMap.find(command[1]);
+      if (expiryTime_reference!=expiryTimeMap.end()) {
+        auto currentTime=chrono::system_clock::now().time_since_epoch().count();
+        if (expiryTime_reference->second<currentTime) {
+          return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
+        }else {
+          memoryDatabase.erase(map_reference);
+          expiryTimeMap.erase(expiryTime_reference);
+          return "$-1\r\n";
+        }
+      }
       return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
     }
     else {
