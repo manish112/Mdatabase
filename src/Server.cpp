@@ -20,7 +20,7 @@ void handleRequest(int clientSocket) {
   memset(buffer,0,sizeof(buffer));
 
   int recv_bytes=recv(clientSocket, buffer, 1024, 0);
-  cout<<"buffer length:"<<buffer.length()<<endl;
+  cout<<"buffer length:"<<sizeof(buffer)<<endl;
   cout<<"Recieved data: "<<buffer<<endl;
     if(recv_bytes==0){
       std::cout << "Client disconnected\n";
