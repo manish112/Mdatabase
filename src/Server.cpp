@@ -12,8 +12,10 @@
 
 using namespace std;
 
+
+
 void handleRequest(int clientSocket) {
-  
+  string readBuffer;
   while(true){
   char buffer[1024];
 
@@ -27,7 +29,8 @@ void handleRequest(int clientSocket) {
       close(clientSocket);
       return;
     }
-
+    readBuffer.append(byffer,recv_bytes);
+    cout<<"Read buffer: "<<readBuffer<<endl;
   char *message="+PONG\r\n";
   send(clientSocket, message, strlen(message), 0);
 }
