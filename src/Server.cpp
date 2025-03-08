@@ -34,13 +34,10 @@ void handleRequest(int clientSocket)
       close(clientSocket);
       return;
     }
-  // for (int i = 0; i < 40; i++) {
-  //   cout<<"buffer["<<i<<"]: "<<buffer[i]<<"\n";
-  // }
+
     readBuffer=buffer;
 
-    cout<<"Data received: "<<readBuffer<<endl;
-    cout<<"Length of data: "<<readBuffer.size()<<endl;
+
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
