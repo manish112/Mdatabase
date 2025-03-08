@@ -171,9 +171,9 @@ string local_buffer=buffer;
     }
 
     position += 2;
-    string strCommand=buffer.substr(position, tokenLength);
-    transform(strCommand.begin(), strCommand.end(), strCommand.begin(), [](unsigned char c) { return toupper(c); });
-    command.push_back(strCommand);
+
+
+    command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
 
 
