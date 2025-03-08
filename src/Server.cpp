@@ -20,7 +20,7 @@ void handleRequest(int clientSocket) {
   memset(buffer,0,sizeof(buffer));
 
   int recv_bytes=recv(clientSocket, buffer, 1024, 0);
-
+  cout<<"buffer length:"<<buffer.length()<<endl;
   cout<<"Recieved data: "<<buffer<<endl;
     if(recv_bytes==0){
       std::cout << "Client disconnected\n";
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   std::cout << "Logs from your program will appear here!\n";
 
-  test1();
+  //test1();
 
   // Uncomment this block to pass the first stage
   
