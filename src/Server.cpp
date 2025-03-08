@@ -160,11 +160,12 @@ vector<string> processRESPCommand(string &buffer)
 
     command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
-    cout<<buffer[position];
+    vector<string> gg;
+    gg.push_back(buffer.substr(position,position));
 
     if (buffer[position] != '\r' && buffer[position + 1] != '\n')
     {
-      return {"nvc5"};
+      return gg;
     }
 
     position += 2;
