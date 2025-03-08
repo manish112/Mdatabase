@@ -133,7 +133,7 @@ vector<string> processRESPCommand(string &buffer)
 
   if (buffer[position] != '\r' && buffer[position + 1] != '\n')
   {
-    return {"nvc2";
+    return {"nvc2"};
   }
 
   position += 2;
