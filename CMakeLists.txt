@@ -7,6 +7,9 @@ file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 set(CMAKE_CXX_STANDARD 23) # Enable the C++23 standard
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
+message("Host OS version: ${CMAKE_HOST_SYSTEM_VERSION}")
+message("Target OS version: ${CMAKE_SYSTEM_VERSION}")
+
 find_package(Threads REQUIRED)
 find_package(asio CONFIG REQUIRED)
 
