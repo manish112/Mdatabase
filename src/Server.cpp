@@ -172,6 +172,6 @@ vector<string> processRESPCommand(string &buffer)
 
 
   }
-  retun command;
+  return command;
  
 }
