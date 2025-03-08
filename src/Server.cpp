@@ -34,10 +34,13 @@ void handleRequest(int clientSocket)
       close(clientSocket);
       return;
     }
-  for (int i = 0; i < 40; i++) {
-    cout<<"buffer["<<i<<"]: "<<buffer[i]<<"\n";
-  }
+  // for (int i = 0; i < 40; i++) {
+  //   cout<<"buffer["<<i<<"]: "<<buffer[i]<<"\n";
+  // }
     readBuffer=buffer;
+
+    cout<<"Data received: "<<readBuffer<<endl;
+    Cout<<"Length of data: "<<readBuffer.size()<<endl;
 
    vector<string> command = processRESPCommand(readBuffer);
     cout<<command[0]<<"\n";
@@ -139,13 +142,13 @@ string local_buffer=buffer;
   position++;
 
 
-  if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
+  if (buffer[position] != '\r' && buffer[position+1] != '\n')
   {
-    cout<<"output: "<<buffer[position]<<buffer[position+1]<<buffer[position+2]<<buffer[position+3]<<"\n";
+
     return {"nvc2"};
   }
 
-  position += 4;
+  position += 2;
 
   for (int i = 0; i < commandLength; i++)
   {
@@ -160,24 +163,23 @@ string local_buffer=buffer;
 
     position++;
 
-    if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
+    if (buffer[position] != '\r' && buffer[position+1] != '\n')
     {
       return {"nvc4"};
     }
 
-    position += 4;
+    position += 2;
 
     command.push_back(buffer.substr(position, tokenLength));
     position += tokenLength;
-    vector<string> gg;
-    gg.push_back(to_string(buffer.size()));
 
-    if (buffer[position] != '\\' && buffer[position+1] != 'r' && buffer[position+2] != '\\' && buffer[position+3] != 'n')
+
+    if (buffer[position] != '\r' && buffer[position+1] != '\n')
     {
       return command;
     }
 
-    position += 4;
+    position += 2;
 
 
   }
