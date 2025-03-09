@@ -280,7 +280,7 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
     transform(subCommand.begin(), subCommand.end(), subCommand.begin(), ::toupper);
     if (subCommand=="GET") {
       if (configs.find(command[2])!=configs.end()) {
-        return "*2\r\n$"+to_string(command[2].size())+"\r\n"+command[2]+"\r\n$"+to_string(configs[command[1]].size())+"\r\n"+configs[command[1]]+"\r\n";
+        return "*2\r\n$"+to_string(command[2].size())+"\r\n"+command[2]+"\r\n$"+to_string(configs[command[2]].size())+"\r\n"+configs[command[2]]+"\r\n";
       }
       else {
         return "$-1\r\n";
