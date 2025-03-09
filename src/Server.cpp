@@ -21,6 +21,7 @@ string processArray(vector<string> &command,unordered_map<string, string> &memor
 
 unordered_map<string, string> memoryDB;
 unordered_map<string, long> expiryTime;
+unordered_map<string, string> configs;
 
 void handleRequest(int clientSocket)
 {
@@ -65,6 +66,21 @@ int main(int argc, char **argv)
   // Flush after every std::cout / std::cerr
   std::cout << std::unitbuf;
   std::cerr << std::unitbuf;
+
+
+  //Process any passed arguments
+
+  for (int i = 0; i < argc; i++) {
+
+      if (argv[i]=="--dir") {
+        configs.insert({"dir", argv[i+1]});
+      }
+
+    if (argv[i]=="--dbfilename ") {
+
+      configs.insert({"dbfilename", argv[i+1]});
+    }
+  }
 
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   std::cout << "Logs from your program will appear here!\n";
@@ -256,6 +272,19 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
     }
     else {
       return "$-1\r\n";
+    }
+  }
+
+  if (strCommand=="CONFIG") {
+    string subCommand=command[1];
+    transform(subCommand.begin(), subCommand.end(), subCommand.begin(), ::toupper);
+    if (subCommand=="GET") {
+      if (configs.find(configs[command[2]])!=configs.end()) {
+        return "*2\r\n$"+to_string(command[2].size())+"\r\n"+command[2]+"\r\n$"+to_string(configs[command[1]].size())+"\r\n"+configs[command[1]]+"\r\n";
+      }
+      else {
+        return "$-1\r\n";
+      }
     }
   }
 
