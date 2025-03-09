@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 
 
   //Process any passed arguments
-
+cout<<"argv"<<argv<<"\n";
   for (int i = 0; i < argc; i++) {
 
       if (argv[i]=="--dir") {
