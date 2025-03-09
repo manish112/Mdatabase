@@ -61,7 +61,7 @@ void handleRequest(int clientSocket)
   }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char* argv[])
 {
   // Flush after every std::cout / std::cerr
   std::cout << std::unitbuf;
