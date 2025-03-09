@@ -68,15 +68,15 @@ int main(int argc, char* argv[])
   std::cerr << std::unitbuf;
 
 
-  //Process any passed arguments
-cout<<"argv"<<argv[0]<<argv[1]<<argv[2]<<argv[3];
-  for (int i = 0; i < argc; i++) {
 
-      if (argv[i]=="--dir") {
+cout<<"argv"<<argv[0]<<argv[1]<<argv[2]<<argv[3]<<argv[4];
+  for (int i = 0; i < argc; i++) {
+      string arguments = argv[i];
+      if (arguments=="--dir") {
         configs.insert({"dir", argv[i+1]});
       }
 
-    if (argv[i]=="--dbfilename ") {
+    if (arguments=="--dbfilename ") {
 
       configs.insert({"dbfilename", argv[i+1]});
     }
