@@ -14,14 +14,41 @@
 #include <algorithm>
 #include <chrono>
 
+class DataStore;
 using namespace std;
 
 vector<string> processRESPCommand(string &buffer);
-string processArray(vector<string> &command,unordered_map<string, string> &memoryDatabase, unordered_map<string, long> &expiryTime);
+string processArray(vector<string> &command,unordered_map<string, DataStore> &memoryDatabase, unordered_map<string, long> &expiryTime);
 
-unordered_map<string, string> memoryDB;
+unordered_map<string, DataStore> memoryDB;
 unordered_map<string, long> expiryTime;
 unordered_map<string, string> configs;
+
+class DataStore {
+
+private:
+  string value;
+  long expiryTime;
+
+public:
+
+  void setValue(string value) {
+    this->value = value;
+  }
+
+  void setExpiryTime(long expiryTime) {
+    this->expiryTime = expiryTime;
+  }
+
+  string getValue() {
+    return value;
+  }
+
+  long getExptime() {
+    return expiryTime;
+  }
+
+};
 
 void handleRequest(int clientSocket)
 {
@@ -216,9 +243,10 @@ vector<string> processRESPCommand(string &buffer)
  
 }
 
-string processArray(vector<string> &command, unordered_map<string, string> &memoryDatabase, unordered_map<string, long> &expiryTimeMap) {
+string processArray(vector<string> &command, unordered_map<string, DataStore> &memoryDatabase, unordered_map<string, long> &expiryTimeMap) {
 
-    string strCommand=command[0];
+  DataStore data_store;
+  string strCommand=command[0];
     transform(strCommand.begin(), strCommand.end(), strCommand.begin(), ::toupper);
     if (strCommand=="PING") {
       return "$4\r\nPONG\r\n";
@@ -242,10 +270,15 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
               expiryTime=stol(command[4])+systemTime;
               cout<<"expiryTime: "<<expiryTime<<endl;
               expiryTimeMap.insert({command[1],expiryTime});
+              data_store.setExpiryTime(expiryTime);
+            }else {
+              data_store.setExpiryTime(0);
             }
           }
 
-          memoryDatabase.insert({command[1],command[2]});
+
+          data_store.setValue(command[3]);
+          memoryDatabase.insert({command[1],data_store});
           return "+OK\r\n";
 
   }
@@ -255,20 +288,23 @@ string processArray(vector<string> &command, unordered_map<string, string> &memo
      auto map_reference= memoryDatabase.find(command[1]);
 
     if (map_reference!=memoryDatabase.end()) {
-      auto expiryTime_reference=expiryTimeMap.find(command[1]);
-      if (expiryTime_reference!=expiryTimeMap.end()) {
+      data_store=map_reference->second;
+
+      if (data_store.getExptime()==0){
         auto currentTime=chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()).count();
 
-        if (expiryTime_reference->second>currentTime) {
-          return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
+        if (data_store.getExptime()>currentTime) {
+          return "$"+to_string(data_store.getValue().size())+"\r\n"+data_store.getValue()+"\r\n";
         }else {
 
           memoryDatabase.erase(map_reference);
-          expiryTimeMap.erase(expiryTime_reference);
+
           return "$-1\r\n";
         }
       }
-      return "$"+to_string(map_reference->second.size())+"\r\n"+map_reference->second+"\r\n";
+    else {
+      return "$"+to_string(data_store.getValue().size())+"\r\n"+data_store.getValue()+"\r\n";
+    }
     }
     else {
       return "$-1\r\n";
